@@ -42,7 +42,6 @@ channels:
           - $ref: "#/components/messages/gameStateUpdate"
           - $ref: "#/components/messages/playerTurn" 
           - $ref: "#/components/messages/playerDisconnected"
-          - $ref: "#/components/messages/bonusSpawned"
           - $ref: "#/components/messages/achievementUnlocked"
           - $ref: "#/components/messages/gameOver"
   /server/unicast:
@@ -107,10 +106,6 @@ components:
       summary: "Event broadcast when a player disconnects or times out."
       payload:
         $ref: "#/components/schemas/PlayerDisconnectedPayload"
-    bonusSpawned:
-      summary: "Event broadcast when a new bonus appears on the board."
-      payload:
-        $ref: "#/components/schemas/BonusSpawnedPayload"
     achievementUnlocked:
       summary: "Event broadcast when a player unlocks an achievement."
       payload:
@@ -257,14 +252,6 @@ components:
         playerId:
           type: string
           description: "The ID of the player who disconnected."
-    BonusSpawnedPayload:
-      type: object
-      properties:
-        eventType:
-          type: string
-          enum: [BONUS_SPAWNED]
-        bonus: { $ref: "#/components/schemas/Bonus" }
-        position: { $ref: "#/components/schemas/Coordinates" }
     AchievementUnlockedPayload:
       type: object
       properties:
