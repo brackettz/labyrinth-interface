@@ -28,8 +28,11 @@ channels:
           - $ref: "#/components/messages/startGameAction"
           - $ref: "#/components/messages/pushTileAction"
           - $ref: "#/components/messages/movePawnAction"
-          - $ref: "#/components/messages/useBonusAction"
           - $ref: "#/components/messages/toggleAI"
+          - $ref: "#/components/messages/useBeamAction"
+          - $ref: "#/components/messages/usePushFixedAction"
+          - $ref: "#/components/messages/useSwapAction"
+          - $ref: "#/components/messages/usePushTwiceAction"
 
   /server/broadcast:
     subscribe:
@@ -72,14 +75,27 @@ components:
       summary: "Action to move the player's pawn after pushing a tile."
       payload:
         $ref: "#/components/schemas/MovePawnActionPayload"
-    useBonusAction:
-      summary: "Action to consume a collected bonus item."
-      payload:
-        $ref: "#/components/schemas/UseBonusActionPayload"
     toggleAI:
       summary: "Action to enable or disable the AI for the player's pawn."
       payload:
         $ref: "#/components/schemas/ToggleAIPayload"
+
+    useBeamAction:
+      summary: "Use the BEAM bonus to teleport to a specific coordinate."
+      payload:
+        $ref: "#/components/schemas/UseBeamActionPayload"
+    useSwapAction:
+      summary: "Use the SWAP bonus to exchange positions with another player."
+      payload:
+        $ref: "#/components/schemas/UseSwapActionPayload"
+    usePushFixedAction:
+      summary: "Use the PUSH_FIXED bonus to move a fixed tile."
+      payload:
+        $ref: "#/components/schemas/UsePushFixedActionPayload"
+    usePushTwiceAction:
+      summary: "Use the PUSH_TWICE bonus to allow an extra push this turn."
+      payload:
+        $ref: "#/components/schemas/UsePushTwiceActionPayload"
 
     # Server -> Client Messages
     lobbyState:
@@ -199,6 +215,48 @@ components:
         enabled:
           type: boolean
           description: "Set to true to enable AI, false to disable."
+          
+    UseBeamActionPayload:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [USE_BEAM]
+        targetCoordinates:
+          $ref: "#/components/schemas/Coordinates"
+    UseSwapActionPayload:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [USE_SWAP]
+        targetPlayerId:
+          type: string
+          description: "The ID of the player to swap positions with."
+
+    UsePushFixedActionPayload:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [USE_PUSH_FIXED]
+        rowOrColIndex:
+          type: integer
+        direction:
+          type: string
+          enum: [UP, DOWN, LEFT, RIGHT]
+        tileEntrances:
+          type: array
+          items:
+            type: string
+            enum: [UP, RIGHT, DOWN, LEFT]
+
+    UsePushTwiceActionPayload:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [USE_PUSH_TWICE]
 
     # Event Payloads (Server -> Client)
     LobbyStatePayload:
