@@ -1,4 +1,4 @@
-package edu.mci.management.api.dto;
+package edu.mci.management.api.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
