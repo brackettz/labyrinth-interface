@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ServerService {
 
         existing.setCurrentPlayerCount(connectedPlayers);
         existing.setStatus(status);
-        existing.setLastSeen(LocalDateTime.now());
+        existing.setLastSeen(Instant.now());
 
         return serverRepository.save(existing);
     }
