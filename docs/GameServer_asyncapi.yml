@@ -4,24 +4,23 @@ info:
   version: "1.1.0"
   description: |
     This specification outlines the event-driven API for real-time communication during a game of 'The Amazing Labyrinth'. 
-    Clients send actions to the server on the `client/actions` channel, and the server broadcasts all game state changes and events to all connected clients on the `server/broadcast` channel. 
-    Clients must listen to the broadcast channel to synchronize their local game state.
+    All communication happens over a single WebSocket connection to the `/game` endpoint.
 
 servers:
   production:
-    url: "{uri}"
+    url: "{uri}/game"
     protocol: websocket
-    description: "The game server's WebSocket connection endpoint. The URI is obtained from the Game Management Server."
+    description: "The game server's WebSocket connection endpoint."
     variables:
       uri:
         default: "ws://localhost:9000"
-        description: "The full connection URI for a specific game server."
+        description: "The base URI of the game server."
 
 channels:
-  /client/actions:
+  /game:
     publish:
-      summary: "Used by the client to send player actions to the server."
-      description: "This is a client-to-server channel where all player-initiated commands are sent. Each message represents a single, specific action, such as connecting to the lobby, pushing a tile, or moving a pawn. The server will process these actions and, if valid, broadcast the resulting state change to all clients."
+      summary: "Client -> Server (Actions)"
+      description: "Used by the client to send player actions to the server."
       message:
         oneOf:
           - $ref: "#/components/messages/connectRequest"
@@ -33,11 +32,9 @@ channels:
           - $ref: "#/components/messages/usePushFixedAction"
           - $ref: "#/components/messages/useSwapAction"
           - $ref: "#/components/messages/usePushTwiceAction"
-
-  /server/broadcast:
     subscribe:
-      summary: "Used by the server to broadcast game events and state updates to all clients."
-      description: "This is a server-to-all-clients channel. Clients must subscribe to this channel to receive all updates regarding the game state, including lobby changes, turn notifications, board updates, and end-of-game results. It is the single source of truth for the game's state."
+      summary: "Server -> Client (Broadcasts & Unicasts)"
+      description: "Used by the server to send game events and state updates to clients (both broadcast and unicast)."
       message:
         oneOf:
           - $ref: "#/components/messages/lobbyState"
@@ -47,12 +44,6 @@ channels:
           - $ref: "#/components/messages/playerDisconnected"
           - $ref: "#/components/messages/achievementUnlocked"
           - $ref: "#/components/messages/gameOver"
-  /server/unicast:
-    subscribe:
-      summary: "Used by the server to unicast game events and state updates to a single client."
-      description: "This is a server-to-one-client channel."
-      message:
-        oneOf:
           - $ref: "#/components/messages/nextTreasureCard"
           - $ref: "#/components/messages/actionError"
 
