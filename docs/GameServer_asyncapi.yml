@@ -143,6 +143,9 @@ components:
         $ref: "#/components/schemas/NextTreasureCardEventPayload"
 
   schemas:
+    # ===========================
+    # === Reusable Enums      ===
+    # ===========================
     CommandType:
       type: string
       enum:
@@ -193,7 +196,9 @@ components:
        type: string
        enum: [RUNNER, PUSHER, BLOCKER, TIME_WASTER, HATTRICK]
 
-
+    # ===========================
+    # === Command Payloads    ===
+    # ===========================
     ConnectCommandPayload:
       type: object
       required: [type, username]
