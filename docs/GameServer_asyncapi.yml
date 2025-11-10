@@ -1,400 +1,402 @@
 asyncapi: 2.6.0
 info:
   title: "The Amazing Labyrinth - Game Interaction API"
-  version: "1.1.0"
+  version: "1.3.0"
   description: |
-    This specification outlines the event-driven API for real-time communication during a game of 'The Amazing Labyrinth'. 
-    All communication happens over a single WebSocket connection to the `/game` endpoint.
+    Specification for real-time communication for 'The Amazing Labyrinth'.
+    Uses a single WebSocket connection for all game events.
+    All messages (sent or received) use the 'type' field as a discriminator.
 
 servers:
   production:
     url: "{uri}/game"
     protocol: websocket
-    description: "The game server's WebSocket connection endpoint."
     variables:
       uri:
         default: "ws://localhost:9000"
-        description: "The base URI of the game server."
 
 channels:
   /game:
     publish:
-      summary: "Client -> Server (Actions)"
-      description: "Used by the client to send player actions to the server."
+      operationId: sendClientCommand
+      summary: "Client -> Server (Commands)"
       message:
         oneOf:
           - $ref: "#/components/messages/connectRequest"
-          - $ref: "#/components/messages/startGameAction"
-          - $ref: "#/components/messages/pushTileAction"
-          - $ref: "#/components/messages/movePawnAction"
-          - $ref: "#/components/messages/toggleAI"
-          - $ref: "#/components/messages/useBeamAction"
-          - $ref: "#/components/messages/usePushFixedAction"
-          - $ref: "#/components/messages/useSwapAction"
-          - $ref: "#/components/messages/usePushTwiceAction"
+          - $ref: "#/components/messages/startGameCommand"
+          - $ref: "#/components/messages/pushTileCommand"
+          - $ref: "#/components/messages/movePawnCommand"
+          - $ref: "#/components/messages/toggleAICommand"
+          - $ref: "#/components/messages/useBeamCommand"
+          - $ref: "#/components/messages/useSwapCommand"
+          - $ref: "#/components/messages/usePushFixedCommand"
+          - $ref: "#/components/messages/usePushTwiceCommand"
     subscribe:
-      summary: "Server -> Client (Broadcasts & Unicasts)"
-      description: "Used by the server to send game events and state updates to clients (both broadcast and unicast)."
+      operationId: receiveServerEvent
+      summary: "Server -> Client (Events)"
       message:
         oneOf:
-          - $ref: "#/components/messages/lobbyState"
-          - $ref: "#/components/messages/gameStarted"
-          - $ref: "#/components/messages/gameStateUpdate"
-          - $ref: "#/components/messages/playerTurn" 
-          - $ref: "#/components/messages/playerDisconnected"
-          - $ref: "#/components/messages/achievementUnlocked"
-          - $ref: "#/components/messages/gameOver"
-          - $ref: "#/components/messages/nextTreasureCard"
-          - $ref: "#/components/messages/actionError"
+          - $ref: "#/components/messages/lobbyStateEvent"
+          - $ref: "#/components/messages/gameStartedEvent"
+          - $ref: "#/components/messages/gameStateUpdateEvent"
+          - $ref: "#/components/messages/playerTurnEvent"
+          - $ref: "#/components/messages/actionErrorEvent"
+          - $ref: "#/components/messages/playerDisconnectedEvent"
+          - $ref: "#/components/messages/achievementUnlockedEvent"
+          - $ref: "#/components/messages/gameOverEvent"
+          - $ref: "#/components/messages/nextTreasureCardEvent"
 
 components:
   messages:
-    # Client -> Server Messages
+    # --- Client -> Server Messages (Commands) ---
     connectRequest:
-      summary: "Action to join the game lobby."
+      messageId: connectRequest
+      summary: "Join the game lobby."
       payload:
         $ref: "#/components/schemas/ConnectRequestPayload"
-    startGameAction:
-      summary: "Action to start the game with specific settings. Only the Administrator can start the game."
+    startGameCommand:
+      messageId: startGameCommand
+      summary: "Admin only: Start the game with specific settings."
       payload:
         $ref: "#/components/schemas/StartGamePayload"
-    pushTileAction:
-      summary: "Action to push the extra tile into a row or column."
+    pushTileCommand:
+      messageId: pushTileCommand
+      summary: "Push the extra tile into the board. Includes implied rotation."
       payload:
-        $ref: "#/components/schemas/PushTileActionPayload"
-    movePawnAction:
-      summary: "Action to move the player's pawn after pushing a tile."
+        $ref: "#/components/schemas/PushTilePayload"
+    movePawnCommand:
+      messageId: movePawnCommand
+      summary: "Move the pawn after pushing."
       payload:
-        $ref: "#/components/schemas/MovePawnActionPayload"
-    toggleAI:
-      summary: "Action to enable or disable the AI for the player's pawn."
+        $ref: "#/components/schemas/MovePawnPayload"
+    toggleAICommand:
+      messageId: toggleAICommand
+      summary: "Enable/disable AI bot for this player."
       payload:
         $ref: "#/components/schemas/ToggleAIPayload"
+    useBeamCommand:
+      messageId: useBeamCommand
+      summary: "Bonus: Teleport to target."
+      payload:
+        $ref: "#/components/schemas/UseBeamPayload"
+    useSwapCommand:
+      messageId: useSwapCommand
+      summary: "Bonus: Swap position with another player."
+      payload:
+        $ref: "#/components/schemas/UseSwapPayload"
+    usePushFixedCommand:
+      messageId: usePushFixedCommand
+      summary: "Bonus: Move a normally fixed tile."
+      payload:
+        $ref: "#/components/schemas/UsePushFixedPayload"
+    usePushTwiceCommand:
+      messageId: usePushTwiceCommand
+      summary: "Bonus: Push a second time this turn."
+      payload:
+        $ref: "#/components/schemas/UsePushTwicePayload"
 
-    useBeamAction:
-      summary: "Use the BEAM bonus to teleport to a specific coordinate."
-      payload:
-        $ref: "#/components/schemas/UseBeamActionPayload"
-    useSwapAction:
-      summary: "Use the SWAP bonus to exchange positions with another player."
-      payload:
-        $ref: "#/components/schemas/UseSwapActionPayload"
-    usePushFixedAction:
-      summary: "Use the PUSH_FIXED bonus to move a fixed tile."
-      payload:
-        $ref: "#/components/schemas/UsePushFixedActionPayload"
-    usePushTwiceAction:
-      summary: "Use the PUSH_TWICE bonus to allow an extra push this turn."
-      payload:
-        $ref: "#/components/schemas/UsePushTwiceActionPayload"
-
-    # Server -> Client Messages
-    lobbyState:
-      summary: "Event broadcast when the lobby's player list changes."
+    # --- Server -> Client Messages (Events) ---
+    lobbyStateEvent:
+      messageId: lobbyStateEvent
+      summary: "Broadcast: Lobby player list changed."
       payload:
         $ref: "#/components/schemas/LobbyStatePayload"
-    gameStarted:
-      summary: "Event sent to each player once the game started with their treasure cards"
+    gameStartedEvent:
+      messageId: gameStartedEvent
+      summary: "Broadcast: The game has officially started."
       payload:
         $ref: "#/components/schemas/GameStartedPayload"
-    gameStateUpdate:
-      summary: "Event broadcast after a player's turn, containing the updated board and player positions."
+    gameStateUpdateEvent:
+      messageId: gameStateUpdateEvent
+      summary: "Broadcast: Full board and player state update."
       payload:
         $ref: "#/components/schemas/GameStateUpdatePayload"
-    playerTurn:
-      summary: "Event indicating which player's turn it is and providing them with the extra tile."
+    playerTurnEvent:
+      messageId: playerTurnEvent
+      summary: "Broadcast: Notifies all players whose turn it is."
       payload:
         $ref: "#/components/schemas/PlayerTurnPayload"
-    actionError:
-      summary: "Event sent to a client that attempted an invalid action."
+    actionErrorEvent:
+      messageId: actionErrorEvent
+      summary: "Unicast: The last command failed."
       payload:
         $ref: "#/components/schemas/ActionErrorPayload"
-    playerDisconnected:
-      summary: "Event broadcast when a player disconnects or times out."
+    playerDisconnectedEvent:
+      messageId: playerDisconnectedEvent
+      summary: "Broadcast: A player lost connection."
       payload:
         $ref: "#/components/schemas/PlayerDisconnectedPayload"
-    achievementUnlocked:
-      summary: "Event broadcast when a player unlocks an achievement."
+    achievementUnlockedEvent:
+      messageId: achievementUnlockedEvent
+      summary: "Broadcast: Player unlocked an achievement."
       payload:
         $ref: "#/components/schemas/AchievementUnlockedPayload"
-    gameOver:
-      summary: "Event broadcast when the game has ended, containing final scores and stats."
+    gameOverEvent:
+      messageId: gameOverEvent
+      summary: "Broadcast: Game ended, final stats."
       payload:
         $ref: "#/components/schemas/GameOverPayload"
-    nextTreasureCard:
-      summary: "Event unicast when the player needs a new treasure card."
+    nextTreasureCardEvent:
+      messageId: nextTreasureCardEvent
+      summary: "Unicast: Informs a player of their next target."
       payload:
         $ref: "#/components/schemas/NextTreasureCardPayload"
 
   schemas:
-    # Action Payloads (Client -> Server)
+    # --- Client Payloads (Commands) ---
     ConnectRequestPayload:
       type: object
+      required: [type, username]
       properties:
-        action:
-          type: string
-          enum: [CONNECT]
-          description: "The type of action."
-        username:
-          type: string
-          description: "The desired username for the player."
+        type: { type: string, enum: [CONNECT] }
+        username: { type: string, minLength: 1, maxLength: 20 }
+
     StartGamePayload:
       type: object
+      required: [type, boardSize, treasureCardCount]
       properties:
-        action:
-          type: string
-          enum: [START_GAME]
-        gameDurationInSeconds:
-          type: integer
-          description: "An object specifying the grid dimensions (number of rows and columns) of the game board."
+        type: { type: string, enum: [START_GAME] }
         boardSize:
           type: object
+          required: [rows, cols]
           properties:
-            rows: { type: integer }
-            cols: { type: integer }
-        treasureCardCount:
-          type: integer
-          description: "The total integer count of unique treasures available in game. This number must be evenly divisible by the number of players to ensure fair distribution."
-        boniCount:
-          type: integer
-          description: "The total integer count of boni available on the board."
+            rows: { type: integer, minimum: 3, default: 7 }
+            cols: { type: integer, minimum: 3, default: 7 }
+        treasureCardCount: { type: integer, default: 24 }
+        totalBonusCount: { type: integer, default: 0 }
+        gameDurationInSeconds: { type: integer }
 
-    PushTileActionPayload:
+    PushTilePayload:
       type: object
+      required: [type, rowOrColIndex, direction, tileEntrances]
       properties:
-        action:
-          type: string
-          enum: [PUSH_TILE]
-        rowOrColIndex:
-          type: integer
-          description: "The index of the row or column to push (e.g., 0, 3, 5)."
-        direction:
-          type: string
-          enum: [UP, DOWN, LEFT, RIGHT]
-          description: "The direction to push the tile from."
+        type: { type: string, enum: [PUSH_TILE] }
+        rowOrColIndex: { type: integer }
+        direction: { type: string, enum: [UP, DOWN, LEFT, RIGHT] }
         tileEntrances:
           type: array
-          description: "List of open directions from this tile (e.g., UP, RIGHT, DOWN, LEFT)."
-          items:
-            type: string
-            enum: [UP, RIGHT, DOWN, LEFT]
-          example: ["UP", "RIGHT"]
-    MovePawnActionPayload:
+          minItems: 1
+          items: { type: string, enum: [UP, RIGHT, DOWN, LEFT] }
+
+    MovePawnPayload:
       type: object
+      required: [type, targetCoordinates]
       properties:
-        action:
-          type: string
-          enum: [MOVE_PAWN]
-        targetCoordinates:
-          $ref: "#/components/schemas/Coordinates"
+        type: { type: string, enum: [MOVE_PAWN] }
+        targetCoordinates: { $ref: "#/components/schemas/Coordinates" }
+
     ToggleAIPayload:
       type: object
+      required: [type, enabled]
       properties:
-        action:
-          type: string
-          enum: [TOGGLE_AI]
-        enabled:
-          type: boolean
-          description: "Set to true to enable AI, false to disable."
-          
-    UseBeamActionPayload:
-      type: object
-      properties:
-        action:
-          type: string
-          enum: [USE_BEAM]
-        targetCoordinates:
-          $ref: "#/components/schemas/Coordinates"
-    UseSwapActionPayload:
-      type: object
-      properties:
-        action:
-          type: string
-          enum: [USE_SWAP]
-        targetPlayerId:
-          type: string
-          description: "The ID of the player to swap positions with."
+        type: { type: string, enum: [TOGGLE_AI] }
+        enabled: { type: boolean }
 
-    UsePushFixedActionPayload:
+    UseBeamPayload:
       type: object
+      required: [type, targetCoordinates]
       properties:
-        action:
-          type: string
-          enum: [USE_PUSH_FIXED]
-        rowOrColIndex:
-          type: integer
-        direction:
-          type: string
-          enum: [UP, DOWN, LEFT, RIGHT]
+        type: { type: string, enum: [USE_BEAM] }
+        targetCoordinates: { $ref: "#/components/schemas/Coordinates" }
+
+    UseSwapPayload:
+      type: object
+      required: [type, targetPlayerId]
+      properties:
+        type: { type: string, enum: [USE_SWAP] }
+        targetPlayerId: { type: string }
+
+    UsePushFixedPayload:
+      type: object
+      required: [type, rowOrColIndex, direction, tileEntrances]
+      properties:
+        type: { type: string, enum: [USE_PUSH_FIXED] }
+        rowOrColIndex: { type: integer }
+        direction: { type: string, enum: [UP, DOWN, LEFT, RIGHT] }
         tileEntrances:
           type: array
-          items:
-            type: string
-            enum: [UP, RIGHT, DOWN, LEFT]
+          items: { type: string, enum: [UP, RIGHT, DOWN, LEFT] }
 
-    UsePushTwiceActionPayload:
+    UsePushTwicePayload:
       type: object
+      required: [type]
       properties:
-        action:
-          type: string
-          enum: [USE_PUSH_TWICE]
+        type: { type: string, enum: [USE_PUSH_TWICE] }
 
-    # Event Payloads (Server -> Client)
+    # --- Server Payloads (Events) ---
     LobbyStatePayload:
       type: object
+      required: [type, players]
       properties:
-        eventType:
-          type: string
-          enum: [LOBBY_STATE]
+        type: { type: string, enum: [LOBBY_STATE] }
         players:
           type: array
           items: { $ref: "#/components/schemas/PlayerInfo" }
+
     GameStartedPayload:
       type: object
+      required: [type, initialBoard, players]
       properties:
-        eventType:
-          type: string
-          enum: [GAME_STARTED]
+        type: { type: string, enum: [GAME_STARTED] }
+        initialBoard: { $ref: "#/components/schemas/GameBoard" }
+        players:
+           type: array
+           items: { $ref: "#/components/schemas/PlayerState" }
+
     GameStateUpdatePayload:
       type: object
+      required: [type, board, players, currentPlayerId, currentTurnState]
       properties:
-        eventType:
-          type: string
-          enum: [GAME_STATE_UPDATE]
+        type: { type: string, enum: [GAME_STATE_UPDATE] }
         board: { $ref: "#/components/schemas/GameBoard" }
         players:
           type: array
           items: { $ref: "#/components/schemas/PlayerState" }
+        currentPlayerId: { type: string }
+        currentTurnState:
+           type: string
+           enum: [WAITING_FOR_PUSH, WAITING_FOR_MOVE, WAITING_FOR_BONUS]
+
     PlayerTurnPayload:
       type: object
+      required: [type, playerId, extraTile]
       properties:
-        eventType:
-          type: string
-          enum: [PLAYER_TURN]
-        playerId:
-          type: string
-          description: "The ID of the player whose turn it is."
-        extraTile:
-          $ref: "#/components/schemas/Tile"
+        type: { type: string, enum: [PLAYER_TURN] }
+        playerId: { type: string }
+        extraTile: { $ref: "#/components/schemas/Tile" }
+        turnTimeLimitSeconds: { type: integer }
+
     ActionErrorPayload:
       type: object
+      required: [type, errorCode, message]
       properties:
-        eventType:
-          type: string
-          enum: [ACTION_ERROR]
-        message:
-          type: string
-          description: "A human-readable error message explaining why the action was invalid."
+        type: { type: string, enum: [ACTION_ERROR] }
+        errorCode: { type: string, enum: [INVALID_MOVE, NOT_YOUR_TURN, INVALID_PUSH, BONUS_NOT_AVAILABLE] }
+        message: { type: string }
+
     PlayerDisconnectedPayload:
       type: object
+      required: [type, playerId]
       properties:
-        eventType:
-          type: string
-          enum: [PLAYER_DISCONNECTED]
-        playerId:
-          type: string
-          description: "The ID of the player who disconnected."
+        type: { type: string, enum: [PLAYER_DISCONNECTED] }
+        playerId: { type: string }
+
     AchievementUnlockedPayload:
       type: object
+      required: [type, playerId, achievement]
       properties:
-        eventType:
-          type: string
-          enum: [ACHIEVEMENT_UNLOCKED]
-        playerId:
-          type: string
-        achievement:
-          type: string
-          enum: [Runner, Pusher, Blocker, TimeWaster, Hattrick]
+        type: { type: string, enum: [ACHIEVEMENT_UNLOCKED] }
+        playerId: { type: string }
+        achievement: { $ref: "#/components/schemas/AchievementType" }
+
     GameOverPayload:
       type: object
+      required: [type, ranking]
       properties:
-        eventType:
-          type: string
-          enum: [GAME_OVER]
+        type: { type: string, enum: [GAME_OVER] }
+        winnerId: { type: string }
         ranking:
           type: array
           items: { $ref: "#/components/schemas/RankingEntry" }
+
     NextTreasureCardPayload:
       type: object
+      required: [type, treasure]
       properties:
+        type: { type: string, enum: [NEXT_TREASURE] }
         treasure: { $ref: "#/components/schemas/Treasure" }
 
-    # Reusable Data Schemas
+    # --- Shared Data Structures ---
     PlayerInfo:
       type: object
-      description: "Basic information about a player, used in the lobby."
       properties:
-        id: { type: string, description: "Unique player ID." }
-        name: { type: string, description: "Player's username." }
+        id: { type: string }
+        name: { type: string }
+        color: { type: string, enum: [RED, BLUE, GREEN, YELLOW] }
+        isAdmin: { type: boolean }
+
+
     PlayerState:
       allOf:
         - $ref: "#/components/schemas/PlayerInfo"
         - type: object
-          description: "Full state of a player during a game."
           properties:
-            position: { $ref: "#/components/schemas/Coordinates" }
-            treasuresFound: 
+            currentPosition: { $ref: "#/components/schemas/Coordinates" }
+            homePosition: { $ref: "#/components/schemas/Coordinates" }
+            treasuresFound:
               type: array
-              description: "Found treasures by player"
               items: { $ref: "#/components/schemas/Treasure" }
-            points:
-              type: integer
+            currentTreasure: { $ref: "#/components/schemas/Treasure" }
+            remainingTreasureCount: { type: integer }
             achievements:
               type: array
-              items:
-                type: string
-                enum: [Runner, Pusher, Blocker, TimeWaster, Hattrick]
+              items: { $ref: "#/components/schemas/AchievementType" }
+            availableBonuses:
+               type: array
+               items: { $ref: "#/components/schemas/BonusType" }
+
     Coordinates:
       type: object
+      required: [x, y]
       properties:
-        x: { type: integer, description: "The column index (0-based)." }
-        y: { type: integer, description: "The row index (0-based)." }
+        x: { type: integer }
+        y: { type: integer }
+
     Tile:
       type: object
-      description: "Represents a single tile on the game board."
       properties:
         entrances:
           type: array
-          description: "List of open directions from this tile (e.g., UP, RIGHT, DOWN, LEFT)."
           items:
             type: string
             enum: [UP, RIGHT, DOWN, LEFT]
-          example: ["UP", "RIGHT"]
-        treasure: 
-          $ref: "#/components/schemas/Treasure"
-        bonus: 
-          $ref: "#/components/schemas/Bonus"
+        treasure: { $ref: "#/components/schemas/Treasure" }
+        bonus: { $ref: "#/components/schemas/Bonus" }
+        isFixed: { type: boolean, default: false }
+
     GameBoard:
       type: object
       properties:
-        size:
-          type: object
-          properties:
-            rows: { type: integer }
-            cols: { type: integer }
+        rows: { type: integer }
+        cols: { type: integer }
         tiles:
           type: array
-          description: "A 2D array representing the board, with `tiles[y][x]`."
           items:
-            type: array
-            items: { $ref: "#/components/schemas/Tile" }
+             type: array
+             items: { $ref: "#/components/schemas/Tile" }
+        lastPush:
+           type: object
+           properties:
+             rowOrColIndex: { type: integer }
+             direction: { type: string, enum: [UP, DOWN, LEFT, RIGHT] }
+
     Treasure:
       type: object
+      required: [id, name]
       properties:
         id: { type: integer }
         name: { type: string }
+
     Bonus:
-      type: object
-      properties:
-        id: { type: string }
-        type: { type: "string", enum: [BEAM, PUSH_FIXED, SWAP, PUSH_TWICE] }
+       type: object
+       properties:
+         id: { type: integer }
+         type: { $ref: "#/components/schemas/BonusType" }
+
+    BonusType:
+       type: string
+       enum: [BEAM, PUSH_FIXED, SWAP, PUSH_TWICE]
+
+    AchievementType:
+       type: string
+       enum: [RUNNER, PUSHER, BLOCKER, TIME_WASTER, HATTRICK]
+
     RankingEntry:
       type: object
       properties:
         playerId: { type: string }
-        playerName: { type: string }
         rank: { type: integer }
-        points: { type: integer }
+        score: { type: integer }
         stats:
           type: object
           properties:
