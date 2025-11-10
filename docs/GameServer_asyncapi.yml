@@ -1,7 +1,7 @@
 asyncapi: 2.6.0
 info:
   title: "The Amazing Labyrinth - Game Interaction API"
-  version: "1.4.0"
+  version: "1.0.0"
   description: |
     Specification for real-time communication for 'The Amazing Labyrinth'.
     Uses a single WebSocket connection for all game events.
@@ -371,6 +371,7 @@ components:
         name: { type: string }
         color: { $ref: "#/components/schemas/PlayerColor" }
         isAdmin: { type: boolean }
+        isReady: { type: boolean }
 
     PlayerState:
       allOf:
@@ -418,11 +419,13 @@ components:
           items:
              type: array
              items: { $ref: "#/components/schemas/Tile" }
-        lastPush:
-           type: object
-           properties:
-             rowOrColIndex: { type: integer }
-             direction: { $ref: "#/components/schemas/Direction" }
+        lastPush: { $ref: "#/components/schemas/PushActionInfo" }
+
+    PushActionInfo:
+       type: object
+       properties:
+         rowOrColIndex: { type: integer }
+         direction: { $ref: "#/components/schemas/Direction" }
 
     Treasure:
       type: object
@@ -443,9 +446,11 @@ components:
         playerId: { type: string }
         rank: { type: integer }
         score: { type: integer }
-        stats:
-          type: object
-          properties:
-            stepsTaken: { type: integer }
-            tilesPushed: { type: integer }
-            treasuresCollected: { type: integer }
+        stats: { $ref: "#/components/schemas/PlayerGameStats" }
+
+    PlayerGameStats:
+      type: object
+      properties:
+        stepsTaken: { type: integer }
+        tilesPushed: { type: integer }
+        treasuresCollected: { type: integer }
