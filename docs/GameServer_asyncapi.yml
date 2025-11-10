@@ -187,16 +187,6 @@ components:
           enum: [MOVE_PAWN]
         targetCoordinates:
           $ref: "#/components/schemas/Coordinates"
-    UseBonusActionPayload:
-      type: object
-      properties:
-        action:
-          type: string
-          enum: [USE_BONUS]
-        bonusType:
-          type: string
-          enum: [BEAM, PUSH_FIXED, SWAP, PUSH_TWICE]
-        # Additional properties might be needed, e.g., 'targetCoordinates' for BEAM or 'targetPlayerId' for SWAP.
     ToggleAIPayload:
       type: object
       properties:
