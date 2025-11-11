@@ -1,3 +1,7 @@
+package labyrinth.contracts.models;
+import labyrinth.contracts.models.PlayerColor;
+import java.util.Map;
+import java.util.Objects;
 public class PlayerInfo {
   private String id;
   private String name;
@@ -23,4 +27,50 @@ public class PlayerInfo {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    PlayerInfo self = (PlayerInfo) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.color, self.color) &&
+        Objects.equals(this.isAdmin, self.isAdmin) &&
+        Objects.equals(this.isReady, self.isReady) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)name, (Object)color, (Object)isAdmin, (Object)isReady, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return "class PlayerInfo {\n" +   
+      "    id: " + toIndentedString(id) + "\n" +
+      "    name: " + toIndentedString(name) + "\n" +
+      "    color: " + toIndentedString(color) + "\n" +
+      "    isAdmin: " + toIndentedString(isAdmin) + "\n" +
+      "    isReady: " + toIndentedString(isReady) + "\n" +
+      "    additionalProperties: " + toIndentedString(additionalProperties) + "\n" +
+    "}";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
 }

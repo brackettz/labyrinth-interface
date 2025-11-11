@@ -1,3 +1,6 @@
+package labyrinth.contracts.models;
+
+
 public enum Direction {
   UP((String)"UP"), DOWN((String)"DOWN"), LEFT((String)"LEFT"), RIGHT((String)"RIGHT");
 

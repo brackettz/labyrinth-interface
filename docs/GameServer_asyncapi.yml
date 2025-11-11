@@ -211,12 +211,7 @@ components:
       required: [type, boardSize, treasureCardCount]
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
-        boardSize:
-          type: object
-          required: [rows, cols]
-          properties:
-            rows: { type: integer, minimum: 3, default: 7 }
-            cols: { type: integer, minimum: 3, default: 7 }
+        boardSize: { $ref: "#/components/schemas/BoardSize" }
         treasureCardCount: { type: integer, default: 24 }
         totalBonusCount: { type: integer, default: 0 }
         gameDurationInSeconds: { type: integer }
@@ -364,6 +359,14 @@ components:
     # ===========================
     # === Shared Objects      ===
     # ===========================
+    BoardSize:
+      type: object
+      required: [rows, cols]
+      properties:
+        rows: { type: integer, minimum: 3, default: 7 }
+        cols: { type: integer, minimum: 3, default: 7 }
+
+    
     PlayerInfo:
       type: object
       properties:

@@ -1,15 +1,21 @@
-const { JavaGenerator } = require("@asyncapi/modelina");
+const { JavaGenerator, JAVA_COMMON_PRESET } = require("@asyncapi/modelina");
 const fs = require("fs");
-const { Parser } = require("@asyncapi/parser");   // Klasse importieren
+const { Parser } = require("@asyncapi/parser");
 
 async function main() {
   const yaml = fs.readFileSync("docs/GameServer_asyncapi.yml", "utf8");
 
-  const parser = new Parser();                    // Instanz erzeugen
-  const { document } = await parser.parse(yaml); // parse() verwenden
+  const parser = new Parser();
+  const { document } = await parser.parse(yaml);
 
-  const generator = new JavaGenerator();
-  const models = await generator.generate(document);
+  const generator = new JavaGenerator({
+    presets: [JAVA_COMMON_PRESET]
+  });
+
+  const models = await generator.generateCompleteModels(document, {
+    packageName: "labyrinth.contracts.models",
+  });
+
 
   if (!fs.existsSync("./models/async")) {
     fs.mkdirSync("./models/async");
