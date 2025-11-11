@@ -23,16 +23,41 @@ Defines the REST interface for registering and discovering game servers.
 * **Protocol:** HTTP REST
 * **File:** `docs/GameManagementServer_openapi.yml`
 
-## Generating Models
+## Generating Models for Async-Api
 
-The Java models in the `/models/async` folder are generated directly from the AsyncAPI specification.
+This module generates Java data models from the AsyncAPI specification using **Modelina** and the **AsyncAPI Parser**.
 
-Prerequisite: [AsyncAPI CLI](https://www.asyncapi.com/tools/cli)
+## Requirements
+- Node.js ≥ 18
+- npm
 
-Run the following command in the root directory to update the models:
+## Installation
+Install the required npm dependencies:
 
 ```bash
-asyncapi generate models java docs/GameServer_asyncapi.yml \
-    -o ./models/async \
-    --packageName=labyrinth.contracts.model \
-    --javaJackson
+npm install
+```
+
+This installs:
+
+```bash
+@asyncapi/modelina — Java model generator
+
+@asyncapi/parser — AsyncAPI document parser
+```
+
+Run the generator script:
+```bash
+node models/generate-async-models.js
+```
+
+This script will:
+
+- Load and parse the AsyncAPI file
+- Convert all components.schemas into Java classes
+- Write the generated files to:
+```bash
+models/async
+```
+
+Existing files in this folder will be overwritten.
