@@ -1,13 +1,9 @@
-public class Coordinates {
-  private int x;
-  private int y;
+public class UsePushTwiceCommandPayload {
+  private CommandType type;
   private Map<String, Object> additionalProperties;
 
-  public int getX() { return this.x; }
-  public void setX(int x) { this.x = x; }
-
-  public int getY() { return this.y; }
-  public void setY(int y) { this.y = y; }
+  public CommandType getType() { return this.type; }
+  public void setType(CommandType type) { this.type = type; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
