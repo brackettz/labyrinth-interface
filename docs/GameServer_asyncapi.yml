@@ -36,6 +36,7 @@ channels:
       summary: "Server -> Client (Events)"
       message:
         oneOf:
+          - $ref: "#/components/messages/serverInfoEvent"
           - $ref: "#/components/messages/lobbyStateEvent"
           - $ref: "#/components/messages/gameStartedEvent"
           - $ref: "#/components/messages/gameStateUpdateEvent"
@@ -96,6 +97,11 @@ components:
         $ref: "#/components/schemas/UsePushTwiceCommandPayload"
 
     # --- Server -> Client Messages (Events) ---
+    serverInfoEvent:
+      messageId: serverInfoEvent
+      summary: "Unicast: Initial server information."
+      payload:
+        $ref: "#/components/schemas/ServerInfoPayload"
     lobbyStateEvent:
       messageId: lobbyStateEvent
       summary: "Broadcast: Lobby player list changed."
@@ -162,6 +168,7 @@ components:
     EventType:
       type: string
       enum:
+        - SERVER_INFO
         - LOBBY_STATE
         - GAME_STARTED
         - GAME_STATE_UPDATE
@@ -186,7 +193,7 @@ components:
 
     ErrorCode:
        type: string
-       enum: [INVALID_MOVE, NOT_YOUR_TURN, INVALID_PUSH, BONUS_NOT_AVAILABLE]
+       enum: [GENERAL, INVALID_MOVE, NOT_YOUR_TURN, INVALID_PUSH, BONUS_NOT_AVAILABLE]
 
     BonusType:
        type: string
@@ -276,6 +283,16 @@ components:
     # ===========================
     # === Event Payloads      ===
     # ===========================
+    ServerInfoPayload:
+      type: object
+      required: [type, serverTime, serverVersion, protocolVersion, motd]
+      properties:
+        type: { $ref: "#/components/schemas/EventType" }
+        serverTime: { type: string, format: date-time }
+        serverVersion: { type: string }
+        protocolVersion: { type: string }
+        motd: { type: string }
+
     LobbyStateEventPayload:
       type: object
       required: [type, players]
