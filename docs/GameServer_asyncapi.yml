@@ -230,7 +230,14 @@ components:
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         username: { type: string, minLength: 1, maxLength: 20 }
-        playerId: { type: string }
+        playerId:
+          type: string
+          description: >-
+            Optional: previously assigned player identifier used for reconnection.
+            Clients MAY send this value when re-connecting so the server can
+            re-associate the session with an existing player. If omitted or
+            invalid the server will assign a new player id and return it in the
+            subsequent `CONNECT_ACK` event.
     
     DisconnectCommandPayload:
       type: object
