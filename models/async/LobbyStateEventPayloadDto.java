@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.PlayerInfo;
 import java.util.Map;
 import java.util.Objects;
-public class LobbyStateEventPayload implements SlashGame {
+public class LobbyStateEventPayloadDto implements SlashGame {
   private EventType type;
   private PlayerInfo[] players;
   private Map<String, Object> additionalProperties;

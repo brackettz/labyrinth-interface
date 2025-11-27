@@ -6,7 +6,7 @@ import labyrinth.contracts.models.PlayerState;
 import labyrinth.contracts.models.TurnState;
 import java.util.Map;
 import java.util.Objects;
-public class GameStateUpdateEventPayload implements SlashGame {
+public class GameStateUpdateEventPayloadDto implements SlashGame {
   private EventType type;
   private GameBoard board;
   private PlayerState[] players;

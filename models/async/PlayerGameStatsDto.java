@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 
 import java.util.Map;
 import java.util.Objects;
-public class PlayerGameStats {
+public class PlayerGameStatsDto {
   private Integer stepsTaken;
   private Integer tilesPushed;
   private Integer treasuresCollected;

@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.CommandType;
 import java.util.Map;
 import java.util.Objects;
-public class ToggleAiCommandPayload {
+public class ToggleAiCommandPayloadDto {
   private CommandType type;
   private boolean enabled;
   private Map<String, Object> additionalProperties;

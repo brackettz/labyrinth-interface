@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.PlayerGameStats;
 import java.util.Map;
 import java.util.Objects;
-public class RankingEntry {
+public class RankingEntryDto {
   private String playerId;
   private Integer rank;
   private Integer score;

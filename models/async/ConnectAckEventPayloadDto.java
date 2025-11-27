@@ -3,7 +3,7 @@ import labyrinth.contracts.models.SlashGame;
 import labyrinth.contracts.models.EventType;
 import java.util.Map;
 import java.util.Objects;
-public class ConnectAckEventPayload implements SlashGame {
+public class ConnectAckEventPayloadDto implements SlashGame {
   private EventType type;
   private String playerId;
   private Map<String, Object> additionalProperties;

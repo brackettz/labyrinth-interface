@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.Treasure;
 import java.util.Map;
 import java.util.Objects;
-public class NextTreasureCardEventPayload implements SlashGame {
+public class NextTreasureCardEventPayloadDto implements SlashGame {
   private EventType type;
   private Treasure treasure;
   private Map<String, Object> additionalProperties;

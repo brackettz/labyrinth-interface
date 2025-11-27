@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.CommandType;
 import java.util.Map;
 import java.util.Objects;
-public class UsePushTwiceCommandPayload {
+public class UsePushTwiceCommandPayloadDto {
   private CommandType type;
   private Map<String, Object> additionalProperties;
 

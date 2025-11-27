@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.PlayerColor;
 import java.util.Map;
 import java.util.Objects;
-public class PlayerInfo {
+public class PlayerInfoDto {
   private String id;
   private String name;
   private PlayerColor color;

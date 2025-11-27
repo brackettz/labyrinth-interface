@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.CommandType;
 import java.util.Map;
 import java.util.Objects;
-public class UseSwapCommandPayload {
+public class UseSwapCommandPayloadDto {
   private CommandType type;
   private String targetPlayerId;
   private Map<String, Object> additionalProperties;

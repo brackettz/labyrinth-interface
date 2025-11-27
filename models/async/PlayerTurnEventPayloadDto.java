@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.Tile;
 import java.util.Map;
 import java.util.Objects;
-public class PlayerTurnEventPayload implements SlashGame {
+public class PlayerTurnEventPayloadDto implements SlashGame {
   private EventType type;
   private String playerId;
   private Tile extraTile;

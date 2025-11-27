@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.RankingEntry;
 import java.util.Map;
 import java.util.Objects;
-public class GameOverEventPayload implements SlashGame {
+public class GameOverEventPayloadDto implements SlashGame {
   private EventType type;
   private String winnerId;
   private RankingEntry[] ranking;

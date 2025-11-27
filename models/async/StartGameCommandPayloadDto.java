@@ -3,7 +3,7 @@ import labyrinth.contracts.models.CommandType;
 import labyrinth.contracts.models.BoardSize;
 import java.util.Map;
 import java.util.Objects;
-public class StartGameCommandPayload {
+public class StartGameCommandPayloadDto {
   private CommandType type;
   private BoardSize boardSize;
   private int treasureCardCount = 24;

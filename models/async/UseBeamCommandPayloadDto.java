@@ -3,7 +3,7 @@ import labyrinth.contracts.models.CommandType;
 import labyrinth.contracts.models.Coordinates;
 import java.util.Map;
 import java.util.Objects;
-public class UseBeamCommandPayload {
+public class UseBeamCommandPayloadDto {
   private CommandType type;
   private Coordinates targetCoordinates;
   private Map<String, Object> additionalProperties;

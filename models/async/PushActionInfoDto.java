@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.Direction;
 import java.util.Map;
 import java.util.Objects;
-public class PushActionInfo {
+public class PushActionInfoDto {
   private Integer rowOrColIndex;
   private Direction direction;
   private Map<String, Object> additionalProperties;

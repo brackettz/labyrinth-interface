@@ -1,7 +1,7 @@
 package labyrinth.contracts.models;
 
 
-public enum ErrorCode {
+public enum ErrorCodeDto {
   GENERAL((String)"GENERAL"), INVALID_MOVE((String)"INVALID_MOVE"), NOT_YOUR_TURN((String)"NOT_YOUR_TURN"), INVALID_PUSH((String)"INVALID_PUSH"), BONUS_NOT_AVAILABLE((String)"BONUS_NOT_AVAILABLE");
 
   private final String value;

@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 
 import java.util.Map;
 import java.util.Objects;
-public class Treasure {
+public class TreasureDto {
   private int id;
   private String name;
   private Map<String, Object> additionalProperties;

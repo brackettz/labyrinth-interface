@@ -3,7 +3,7 @@ import labyrinth.contracts.models.CommandType;
 import labyrinth.contracts.models.Direction;
 import java.util.Map;
 import java.util.Objects;
-public class PushTileCommandPayload {
+public class PushTileCommandPayloadDto {
   private CommandType type;
   private int rowOrColIndex;
   private Direction direction;

@@ -5,7 +5,7 @@ import labyrinth.contracts.models.GameBoard;
 import labyrinth.contracts.models.PlayerState;
 import java.util.Map;
 import java.util.Objects;
-public class GameStartedEventPayload implements SlashGame {
+public class GameStartedEventPayloadDto implements SlashGame {
   private EventType type;
   private GameBoard initialBoard;
   private PlayerState[] players;

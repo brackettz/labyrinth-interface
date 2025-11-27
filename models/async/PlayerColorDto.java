@@ -1,7 +1,7 @@
 package labyrinth.contracts.models;
 
 
-public enum PlayerColor {
+public enum PlayerColorDto {
   RED((String)"RED"), BLUE((String)"BLUE"), GREEN((String)"GREEN"), YELLOW((String)"YELLOW");
 
   private final String value;

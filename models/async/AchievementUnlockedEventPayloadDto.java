@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.AchievementType;
 import java.util.Map;
 import java.util.Objects;
-public class AchievementUnlockedEventPayload implements SlashGame {
+public class AchievementUnlockedEventPayloadDto implements SlashGame {
   private EventType type;
   private String playerId;
   private AchievementType achievement;

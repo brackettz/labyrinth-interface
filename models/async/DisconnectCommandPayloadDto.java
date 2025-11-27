@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.CommandType;
 import java.util.Map;
 import java.util.Objects;
-public class DisconnectCommandPayload {
+public class DisconnectCommandPayloadDto {
   private CommandType type;
   private String username;
   private Map<String, Object> additionalProperties;

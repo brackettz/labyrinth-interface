@@ -4,7 +4,7 @@ import labyrinth.contracts.models.Treasure;
 import labyrinth.contracts.models.Bonus;
 import java.util.Map;
 import java.util.Objects;
-public class Tile {
+public class TileDto {
   private Direction[] entrances;
   private Treasure treasure;
   private Bonus bonus;

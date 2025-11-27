@@ -21,10 +21,21 @@ async function main() {
     fs.mkdirSync("./models/async");
   }
 
+
+  const typeKeywords = ["class", "interface", "enum", "record"];
+
   for (const model of models) {
-    const fileName = `./models/async/${model.modelName}Dto.java`;
-    fs.writeFileSync(fileName, model.result);
-    console.log("Generated:", fileName);
+    const dtoName = `${model.modelName}Dto`;
+
+    let java = model.result;
+
+    for (const keyword of typeKeywords) {
+      const regex = new RegExp(`${keyword}\\s+${model.modelName}\\b`);
+      java = java.replace(regex, `${keyword} ${dtoName}`);
+    }
+
+    fs.writeFileSync(`./models/async/${dtoName}.java`, java);
+    console.log("Generated:", dtoName);
   }
 }
 

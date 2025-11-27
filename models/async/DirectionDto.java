@@ -1,7 +1,7 @@
 package labyrinth.contracts.models;
 
 
-public enum Direction {
+public enum DirectionDto {
   UP((String)"UP"), DOWN((String)"DOWN"), LEFT((String)"LEFT"), RIGHT((String)"RIGHT");
 
   private final String value;

@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 import labyrinth.contracts.models.BonusType;
 import java.util.Map;
 import java.util.Objects;
-public class Bonus {
+public class BonusDto {
   private Integer id;
   private BonusType type;
   private Map<String, Object> additionalProperties;

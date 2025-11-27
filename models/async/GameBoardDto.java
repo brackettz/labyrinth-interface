@@ -3,7 +3,7 @@ import labyrinth.contracts.models.Tile;
 import labyrinth.contracts.models.PushActionInfo;
 import java.util.Map;
 import java.util.Objects;
-public class GameBoard {
+public class GameBoardDto {
   private Integer rows;
   private Integer cols;
   private Tile[][] tiles;

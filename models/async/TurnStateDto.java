@@ -1,7 +1,7 @@
 package labyrinth.contracts.models;
 
 
-public enum TurnState {
+public enum TurnStateDto {
   WAITING_FOR_PUSH((String)"WAITING_FOR_PUSH"), WAITING_FOR_MOVE((String)"WAITING_FOR_MOVE"), WAITING_FOR_BONUS((String)"WAITING_FOR_BONUS");
 
   private final String value;

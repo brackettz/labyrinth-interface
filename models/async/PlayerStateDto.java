@@ -6,7 +6,7 @@ import labyrinth.contracts.models.AchievementType;
 import labyrinth.contracts.models.BonusType;
 import java.util.Map;
 import java.util.Objects;
-public class PlayerState {
+public class PlayerStateDto {
   private String id;
   private String name;
   private PlayerColor color;

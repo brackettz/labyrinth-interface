@@ -4,7 +4,7 @@ import labyrinth.contracts.models.EventType;
 import labyrinth.contracts.models.ErrorCode;
 import java.util.Map;
 import java.util.Objects;
-public class ActionErrorEventPayload implements SlashGame {
+public class ActionErrorEventPayloadDto implements SlashGame {
   private EventType type;
   private ErrorCode errorCode;
   private String message;

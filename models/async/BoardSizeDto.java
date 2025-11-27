@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 
 import java.util.Map;
 import java.util.Objects;
-public class BoardSize {
+public class BoardSizeDto {
   private int rows = 7;
   private int cols = 7;
   private Map<String, Object> additionalProperties;

@@ -2,7 +2,7 @@ package labyrinth.contracts.models;
 
 import java.util.Map;
 import java.util.Objects;
-public class Coordinates {
+public class CoordinatesDto {
   private int x;
   private int y;
   private Map<String, Object> additionalProperties;

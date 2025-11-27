@@ -1,7 +1,7 @@
 package labyrinth.contracts.models;
 
 
-public enum BonusType {
+public enum BonusTypeDto {
   BEAM((String)"BEAM"), PUSH_FIXED((String)"PUSH_FIXED"), SWAP((String)"SWAP"), PUSH_TWICE((String)"PUSH_TWICE");
 
   private final String value;
