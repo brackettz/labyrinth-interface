@@ -22,7 +22,7 @@ async function main() {
   }
 
   for (const model of models) {
-    const fileName = `./models/async/${model.modelName}.java`;
+    const fileName = `./models/async/${model.modelName}Dto.java`;
     fs.writeFileSync(fileName, model.result);
     console.log("Generated:", fileName);
   }
