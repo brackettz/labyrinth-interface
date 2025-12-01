@@ -437,9 +437,9 @@ components:
 
     PlayerState:
       allOf:
-        - $ref: "#/components/schemas/PlayerInfo"
         - type: object
           properties:
+            playerInfo: { $ref: "#/components/schemas/PlayerInfo" }
             currentPosition: { $ref: "#/components/schemas/Coordinates" }
             homePosition: { $ref: "#/components/schemas/Coordinates" }
             treasuresFound:
