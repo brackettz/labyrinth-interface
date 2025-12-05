@@ -429,7 +429,6 @@ components:
     PlayerInfo:
       type: object
       properties:
-        id: { type: string }
         name: { type: string }
         color: { $ref: "#/components/schemas/PlayerColor" }
         isAdmin: { type: boolean }
