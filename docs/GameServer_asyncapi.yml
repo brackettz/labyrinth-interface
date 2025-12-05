@@ -230,7 +230,7 @@ components:
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         username: { type: string, minLength: 1, maxLength: 50 }
-        playerId:
+        identifierToken:
           type: string
           description: >-
             Optional: previously assigned player identifier used for reconnection.
@@ -327,10 +327,10 @@ components:
 
     ConnectAckEventPayload:
       type: object
-      required: [type, playerId]
+      required: [type, identifierToken]
       properties:
         type: { $ref: "#/components/schemas/EventType" }
-        playerId:
+        identifierToken:
           type: string
           description: "The unique identifier assigned to the player by the server. Clients should persist this id for reconnection attempts."
 
