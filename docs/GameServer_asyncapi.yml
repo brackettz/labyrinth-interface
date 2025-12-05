@@ -444,7 +444,6 @@ components:
         treasuresFound:
           type: array
           items: { $ref: "#/components/schemas/Treasure" }
-        currentTreasure: { $ref: "#/components/schemas/Treasure" }
         remainingTreasureCount: { type: integer }
         achievements:
           type: array
