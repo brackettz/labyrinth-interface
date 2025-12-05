@@ -291,7 +291,7 @@ components:
 
     UseSwapCommandPayload:
       type: object
-      required: [type, targetPlayerId]
+      required: [type, targetPlayerId]  
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         targetPlayerId: { type: string }
@@ -433,7 +433,6 @@ components:
         name: { type: string }
         color: { $ref: "#/components/schemas/PlayerColor" }
         isAdmin: { type: boolean }
-        isReady: { type: boolean }
 
     PlayerState:
       type: object
