@@ -241,10 +241,9 @@ components:
     
     DisconnectCommandPayload:
       type: object
-      required: [type, username]
+      required: [type]
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
-        username: { type: string, minLength: 1, maxLength: 50 }
 
     StartGameCommandPayload:
       type: object
