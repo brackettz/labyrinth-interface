@@ -219,7 +219,7 @@ components:
 
     AchievementType:
        type: string
-       enum: [RUNNER, PUSHER, BLOCKER, TIME_WASTER, HATTRICK]
+       enum: [RUNNER, PUSHER, BLOCKER]
 
     # ===========================
     # === Command Payloads    ===
