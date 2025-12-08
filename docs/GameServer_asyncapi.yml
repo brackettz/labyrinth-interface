@@ -247,13 +247,13 @@ components:
 
     StartGameCommandPayload:
       type: object
-      required: [type, boardSize, treasureCardCount]
+      required: [type, boardSize]
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         boardSize: { $ref: "#/components/schemas/BoardSize" }
         treasureCardCount: { type: integer, default: 24, minimum: 2, maximum: 24 }
-        totalBonusCount: { type: integer, default: 0 }
-        gameDurationInSeconds: { type: integer }
+        totalBonusCount: { type: integer, default: 0, minimum: 0, maximum: 20 }
+        gameDurationInSeconds: { type: integer, default: 3600, minimum: 0 }
 
     PushTileCommandPayload:
       type: object
