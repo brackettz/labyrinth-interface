@@ -433,6 +433,8 @@ components:
         - Rows increase as you move downward.
         - Columns increase as you move to the right.
         - The bottom-right corner corresponds to (rows-1, cols-1).
+        - The top-right corner corresponds to (0, cols-1).
+        - The bottom-left corner corresponds to (rows-1, 0).
 
     PlayerInfo:
       type: object
