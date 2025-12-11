@@ -42,7 +42,6 @@ channels:
           - $ref: "#/components/messages/connectAckEvent"
           - $ref: "#/components/messages/gameStartedEvent"
           - $ref: "#/components/messages/gameStateUpdateEvent"
-          - $ref: "#/components/messages/playerTurnEvent"
           - $ref: "#/components/messages/actionErrorEvent"
           - $ref: "#/components/messages/playerDisconnectedEvent"
           - $ref: "#/components/messages/achievementUnlockedEvent"
@@ -69,7 +68,7 @@ components:
         $ref: "#/components/schemas/StartGameCommandPayload"
     pushTileCommand:
       messageId: pushTileCommand
-      summary: "Push the extra tile into the board. Includes implied rotation."
+      summary: "Push the spare tile into the board. Includes implied rotation."
       payload:
         $ref: "#/components/schemas/PushTileCommandPayload"
     movePawnCommand:
@@ -127,17 +126,12 @@ components:
       messageId: gameStartedEvent
       summary: "Broadcast: The game has officially started."
       payload:
-        $ref: "#/components/schemas/GameStartedEventPayload"
+        $ref: "#/components/schemas/GameStateEventPayload"
     gameStateUpdateEvent:
       messageId: gameStateUpdateEvent
-      summary: "Broadcast: Full board and player state update."
+      summary: "Broadcast: Full board, player states, and turn info update."
       payload:
-        $ref: "#/components/schemas/GameStateUpdateEventPayload"
-    playerTurnEvent:
-      messageId: playerTurnEvent
-      summary: "Broadcast: Notifies all players whose turn it is."
-      payload:
-        $ref: "#/components/schemas/PlayerTurnEventPayload"
+        $ref: "#/components/schemas/GameStateEventPayload"
     actionErrorEvent:
       messageId: actionErrorEvent
       summary: "Unicast: The last command failed."
@@ -189,7 +183,6 @@ components:
         - LOBBY_STATE
         - GAME_STARTED
         - GAME_STATE_UPDATE
-        - PLAYER_TURN
         - ACTION_ERROR
         - PLAYER_DISCONNECTED
         - ACHIEVEMENT_UNLOCKED
@@ -346,36 +339,16 @@ components:
           type: array
           items: { $ref: "#/components/schemas/PlayerInfo" }
 
-    GameStartedEventPayload:
+    GameStateEventPayload:
       type: object
-      required: [type, initialBoard, players]
-      properties:
-        type: { $ref: "#/components/schemas/EventType" }
-        initialBoard: { $ref: "#/components/schemas/GameBoard" }
-        players:
-           type: array
-           items: { $ref: "#/components/schemas/PlayerState" }
-
-    GameStateUpdateEventPayload:
-      type: object
-      required: [type, board, players, currentPlayerId, currentTurnState]
+      required: [type, board, players, currentTurnState]
       properties:
         type: { $ref: "#/components/schemas/EventType" }
         board: { $ref: "#/components/schemas/GameBoard" }
         players:
           type: array
           items: { $ref: "#/components/schemas/PlayerState" }
-        currentPlayerId: { type: string }
-        currentTurnState: { $ref: "#/components/schemas/TurnState" }
-
-    PlayerTurnEventPayload:
-      type: object
-      required: [type, playerId, extraTile]
-      properties:
-        type: { $ref: "#/components/schemas/EventType" }
-        playerId: { type: string }
-        extraTile: { $ref: "#/components/schemas/Tile" }
-        turnTimeLimitSeconds: { type: integer }
+        currentTurnInfo: { $ref: "#/components/schemas/CurrentTurnInfo" }
 
     ActionErrorEventPayload:
       type: object
@@ -462,6 +435,14 @@ components:
            type: array
            items: { $ref: "#/components/schemas/BonusType" }
 
+    CurrentTurnInfo:
+      type: object
+      required: [ currentPlayerId, timeLimitSeconds, state ]
+      properties:
+        currentPlayerId: { type: string }
+        timeLimitSeconds: { type: integer }
+        state: { $ref: "#/components/schemas/TurnState" }
+
     Coordinates:
       type: object
       required: [row, column]
@@ -492,6 +473,7 @@ components:
           items:
              type: array
              items: { $ref: "#/components/schemas/Tile" }
+        spareTile: { $ref: "#/components/schemas/Tile" }
         lastPush: { $ref: "#/components/schemas/PushActionInfo" }
 
     PushActionInfo:
