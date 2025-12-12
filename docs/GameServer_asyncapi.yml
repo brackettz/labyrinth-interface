@@ -356,6 +356,7 @@ components:
           type: array
           items: { $ref: "#/components/schemas/PlayerState" }
         currentTurnInfo: { $ref: "#/components/schemas/CurrentTurnInfo" }
+        gameEndTime: { type: string, format: date-time }
 
     ActionErrorEventPayload:
       type: object
