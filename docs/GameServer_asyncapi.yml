@@ -373,7 +373,7 @@ components:
           items: { $ref: "#/components/schemas/PlayerState" }
         currentPlayerId: { type: string }
         currentTurnState: { $ref: "#/components/schemas/TurnState" }
-        extraTile: { $ref: "#/components/schemas/Tile" }
+
 
     PlayerTurnEventPayload:
       type: object
@@ -490,6 +490,7 @@ components:
           items:
              type: array
              items: { $ref: "#/components/schemas/Tile" }
+        extraTile: { $ref: "#/components/schemas/Tile" }
         lastPush: { $ref: "#/components/schemas/PushActionInfo" }
 
     PushActionInfo:
