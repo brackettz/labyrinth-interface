@@ -43,8 +43,8 @@ channels:
           - $ref: "#/components/messages/connectAckEvent"
           - $ref: "#/components/messages/gameStartedEvent"
           - $ref: "#/components/messages/gameStateEvent"
+          - $ref: "#/components/messages/playerUpdatedEvent"
           - $ref: "#/components/messages/actionErrorEvent"
-          - $ref: "#/components/messages/playerDisconnectedEvent"
           - $ref: "#/components/messages/achievementUnlockedEvent"
           - $ref: "#/components/messages/gameOverEvent"
           - $ref: "#/components/messages/nextTreasureCardEvent"
@@ -138,16 +138,16 @@ components:
       summary: "Broadcast: Full board and player state update."
       payload:
         $ref: "#/components/schemas/GameStateEventPayload"
+    playerUpdatedEvent:
+      messageId: playerUpdatedEvent
+      summary: "Broadcast: A player's info updated only during the game. Optional event to inform about changes like AI control toggling. If not send, the players info will be updated with the next gameStateEvent."
+      payload:
+        $ref: "#/components/schemas/PlayerUpdatedEventPayload"
     actionErrorEvent:
       messageId: actionErrorEvent
       summary: "Unicast: The last command failed."
       payload:
         $ref: "#/components/schemas/ActionErrorEventPayload"
-    playerDisconnectedEvent:
-      messageId: playerDisconnectedEvent
-      summary: "Broadcast: A player lost connection."
-      payload:
-        $ref: "#/components/schemas/PlayerDisconnectedEventPayload"
     achievementUnlockedEvent:
       messageId: achievementUnlockedEvent
       summary: "Broadcast: Player unlocked an achievement."
@@ -191,7 +191,7 @@ components:
         - GAME_STARTED
         - GAME_STATE_UPDATE
         - ACTION_ERROR
-        - PLAYER_DISCONNECTED
+        - PLAYER_UPDATED
         - ACHIEVEMENT_UNLOCKED
         - GAME_OVER
         - NEXT_TREASURE
@@ -346,6 +346,13 @@ components:
           type: array
           items: { $ref: "#/components/schemas/PlayerInfo" }
 
+    PlayerUpdatedEventPayload:
+      type: object
+      required: [ type, player ]
+      properties:
+        type: { $ref: "#/components/schemas/EventType" }
+        player: { $ref: "#/components/schemas/PlayerInfo" }
+
     GameStateEventPayload:
       type: object
       required: [type, board, players, currentTurnInfo]
@@ -365,13 +372,6 @@ components:
         type: { $ref: "#/components/schemas/EventType" }
         errorCode: { $ref: "#/components/schemas/ErrorCode" }
         message: { type: string }
-
-    PlayerDisconnectedEventPayload:
-      type: object
-      required: [type, playerId]
-      properties:
-        type: { $ref: "#/components/schemas/EventType" }
-        playerId: { type: string }
 
     AchievementUnlockedEventPayload:
       type: object
@@ -418,7 +418,6 @@ components:
         - The bottom-left corner corresponds to (rows-1, 0).
         - Only odd numbers of rows and columns are allowed.
 
-    
     PlayerInfo:
       type: object
       properties:
@@ -427,6 +426,7 @@ components:
         color: { $ref: "#/components/schemas/PlayerColor" }
         isAdmin: { type: boolean }
         isAiControlled: { type: boolean }
+        isConnected: { type: boolean }
 
     CurrentTurnInfo:
       type: object
