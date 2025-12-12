@@ -304,6 +304,7 @@ components:
         type: { $ref: "#/components/schemas/CommandType" }
         rowOrColIndex: { type: integer }
         direction: { $ref: "#/components/schemas/Direction" }
+      description: "Push a normally fixed tile using the Push Fixed bonus. It's not allowed to move border tiles to prevent removing home bases of the players."
 
     UsePushTwiceCommandPayload:
       type: object
