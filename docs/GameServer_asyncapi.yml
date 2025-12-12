@@ -405,7 +405,6 @@ components:
       required: [type, ranking]
       properties:
         type: { $ref: "#/components/schemas/EventType" }
-        winnerId: { type: string }
         ranking:
           type: array
           items: { $ref: "#/components/schemas/RankingEntry" }
@@ -509,7 +508,6 @@ components:
       type: object
       properties:
         playerId: { type: string }
-        rank: { type: integer }
         score: { type: integer }
         stats: { $ref: "#/components/schemas/PlayerGameStats" }
 
