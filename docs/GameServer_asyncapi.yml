@@ -207,7 +207,7 @@ components:
 
     TurnState:
       type: string
-      enum: [WAITING_FOR_PUSH, WAITING_FOR_MOVE, WAITING_FOR_BONUS]
+      enum: [WAITING_FOR_PUSH, WAITING_FOR_MOVE]
 
     ErrorCode:
        type: string
