@@ -414,6 +414,7 @@ components:
         - The bottom-right corner corresponds to (rows-1, cols-1).
         - The top-right corner corresponds to (0, cols-1).
         - The bottom-left corner corresponds to (rows-1, 0).
+        - Only odd numbers of rows and columns are allowed.
 
     
     PlayerInfo:
