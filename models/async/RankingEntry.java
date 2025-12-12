@@ -29,7 +29,7 @@ public class RankingEntry {
       return false;
     }
     RankingEntry self = (RankingEntry) o;
-      return 
+      return
         Objects.equals(this.playerId, self.playerId) &&
         Objects.equals(this.score, self.score) &&
         Objects.equals(this.stats, self.stats) &&
@@ -40,25 +40,3 @@ public class RankingEntry {
   public int hashCode() {
     return Objects.hash((Object)playerId, (Object)score, (Object)stats, (Object)additionalProperties);
   }
-
-  @Override
-  public String toString() {
-    return "class RankingEntry {\n" +   
-      "    playerId: " + toIndentedString(playerId) + "\n" +
-      "    score: " + toIndentedString(score) + "\n" +
-      "    stats: " + toIndentedString(stats) + "\n" +
-      "    additionalProperties: " + toIndentedString(additionalProperties) + "\n" +
-    "}";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-}
