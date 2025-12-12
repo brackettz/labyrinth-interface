@@ -25,6 +25,7 @@ channels:
           - $ref: "#/components/messages/connectCommand"
           - $ref: "#/components/messages/disconnectCommand"
           - $ref: "#/components/messages/startGameCommand"
+          - $ref: "#/components/messages/rotateTileCommand"
           - $ref: "#/components/messages/pushTileCommand"
           - $ref: "#/components/messages/movePawnCommand"
           - $ref: "#/components/messages/toggleAICommand"
@@ -67,6 +68,11 @@ components:
       summary: "Admin only: Start the game with specific settings."
       payload:
         $ref: "#/components/schemas/StartGameCommandPayload"
+    rotateTileCommand:
+      messageId: rotateTileCommand
+      summary: "Rotates the current tile clockwise"
+      payload:
+        $ref: "#/components/schemas/RotateTileCommandPayload"
     pushTileCommand:
       messageId: pushTileCommand
       summary: "Push the extra tile into the board. Includes implied rotation."
@@ -174,6 +180,7 @@ components:
         - CONNECT
         - DISCONNECT
         - START_GAME
+        - ROTATE_TILE
         - PUSH_TILE
         - MOVE_PAWN
         - TOGGLE_AI
@@ -255,17 +262,19 @@ components:
         totalBonusCount: { type: integer, default: 0 }
         gameDurationInSeconds: { type: integer }
 
+    RotateTileCommandPayload:
+      type: object
+      required: [type]
+      properties:
+        type: { $ref: "#/components/schemas/CommandType" }
+
     PushTileCommandPayload:
       type: object
-      required: [type, rowOrColIndex, direction, tileEntrances]
+      required: [type, rowOrColIndex, direction]
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         rowOrColIndex: { type: integer }
         direction: { $ref: "#/components/schemas/Direction" }
-        tileEntrances:
-          type: array
-          minItems: 1
-          items: { $ref: "#/components/schemas/Direction" }
 
     MovePawnCommandPayload:
       type: object
@@ -297,14 +306,11 @@ components:
 
     UsePushFixedCommandPayload:
       type: object
-      required: [type, rowOrColIndex, direction, tileEntrances]
+      required: [type, rowOrColIndex, direction]
       properties:
         type: { $ref: "#/components/schemas/CommandType" }
         rowOrColIndex: { type: integer }
         direction: { $ref: "#/components/schemas/Direction" }
-        tileEntrances:
-          type: array
-          items: { $ref: "#/components/schemas/Direction" }
 
     UsePushTwiceCommandPayload:
       type: object
@@ -367,14 +373,14 @@ components:
           items: { $ref: "#/components/schemas/PlayerState" }
         currentPlayerId: { type: string }
         currentTurnState: { $ref: "#/components/schemas/TurnState" }
+        extraTile: { $ref: "#/components/schemas/Tile" }
 
     PlayerTurnEventPayload:
       type: object
-      required: [type, playerId, extraTile]
+      required: [type, playerId]
       properties:
         type: { $ref: "#/components/schemas/EventType" }
         playerId: { type: string }
-        extraTile: { $ref: "#/components/schemas/Tile" }
         turnTimeLimitSeconds: { type: integer }
 
     ActionErrorEventPayload:
